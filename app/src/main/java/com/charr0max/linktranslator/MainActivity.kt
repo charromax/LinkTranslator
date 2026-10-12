@@ -1,7 +1,6 @@
 package com.charr0max.linktranslator
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -52,15 +51,10 @@ class MainActivity : ComponentActivity() {
         ) {
             Text("Link Translator", style = MaterialTheme.typography.headlineMedium)
             Text("Share a Spotify link to this app from the share sheet to open the same song in the music app you use.")
-            Text("To translate links when you tap them, open the app's settings, then \"Open by default\" or \"Open supported links\", and enable open.spotify.com. You may need to turn off link handling in the Spotify app.")
+            Text("To translate links when you tap them, go to Settings > Apps > Default apps > Opening links > Link Translator, then add open.spotify.com. You may need to turn off link handling in the Spotify app.")
             Button(onClick = {
-                startActivity(
-                    Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:$packageName")
-                    )
-                )
-            }) { Text("Open app settings") }
+                startActivity(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
+            }) { Text("Open Apps settings") }
             OutlinedButton(onClick = { scope.launch { setPreferredPlatform(null) } }) {
                 Text("Forget preferred music app")
             }
