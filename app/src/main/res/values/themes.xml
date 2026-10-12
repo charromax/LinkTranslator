@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.LinkTranslator" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Polyglot" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.LinkTranslator.Dialog" parent="Theme.LinkTranslator">
+    <style name="Theme.Polyglot.Dialog" parent="Theme.Polyglot">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>

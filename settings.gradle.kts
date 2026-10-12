@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LinkTranslator"
+rootProject.name = "Polyglot"
 include(":app")
  

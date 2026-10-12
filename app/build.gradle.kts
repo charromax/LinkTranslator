@@ -1,26 +1,66 @@
+import org.gradle.api.GradleException
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
 
+val configuredVersionCode = providers.gradleProperty("releaseVersionCode").orNull
+val releaseVersionCode = configuredVersionCode?.toIntOrNull()
+    ?: if (configuredVersionCode == null) 1 else throw GradleException(
+        "releaseVersionCode must be a positive integer."
+    )
+if (releaseVersionCode <= 0) {
+    throw GradleException("releaseVersionCode must be a positive integer.")
+}
+val releaseVersionName = providers.gradleProperty("releaseVersionName").orNull ?: "1.0"
+val releaseSigningProperties = listOf(
+    "releaseStoreFile",
+    "releaseStorePassword",
+    "releaseKeyAlias",
+    "releaseKeyPassword",
+)
+val missingReleaseSigningProperties = releaseSigningProperties.filter {
+    providers.gradleProperty(it).orNull.isNullOrBlank()
+}
+val releaseTasksRequested = gradle.startParameter.taskNames.any {
+    it.contains("release", ignoreCase = true)
+}
+
+if (releaseTasksRequested && missingReleaseSigningProperties.isNotEmpty()) {
+    throw GradleException(
+        "Release builds require Gradle properties: ${missingReleaseSigningProperties.joinToString()}"
+    )
+}
+
 android {
-    namespace = "com.charr0max.linktranslator"
+    namespace = "com.charr0max.polyglot"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.charr0max.linktranslator"
+        applicationId = "com.charr0max.polyglot"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = releaseVersionCode
+        versionName = releaseVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = providers.gradleProperty("releaseStoreFile").orNull?.let(::file)
+            storePassword = providers.gradleProperty("releaseStorePassword").orNull
+            keyAlias = providers.gradleProperty("releaseKeyAlias").orNull
+            keyPassword = providers.gradleProperty("releaseKeyPassword").orNull
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             optimization {
                 enable = false
             }
