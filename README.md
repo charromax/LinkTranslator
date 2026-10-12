@@ -1,6 +1,6 @@
-# LinkTranslator
+# Polyglot
 
-An Android app that opens music links in the streaming app you actually use. If a friend sends a Spotify link, LinkTranslator searches for the same track on another platform and opens it in an installed app such as YouTube Music.
+An Android app that opens music links in the streaming app you actually use. If a friend sends a Spotify link, Polyglot searches for the same track on another platform and opens it in an installed app such as YouTube Music.
 
 ## How it works
 
@@ -27,3 +27,11 @@ An Android app that opens music links in the streaming app you actually use. If 
 ./gradlew :app:assembleDebug
 ./gradlew :app:testDebugUnitTest
 ```
+
+## Tester builds and releases
+
+Pull requests are verified with unit tests and a debug APK build. Signed tester
+prereleases are published after merges to `master`; stable GitHub Releases are
+created only from intentional `vX.Y.Z` tags. See the
+[tester and release delivery guide](docs/releases.md) for the signing setup,
+branch-protection check, tester installation, and future Play Console handoff.
