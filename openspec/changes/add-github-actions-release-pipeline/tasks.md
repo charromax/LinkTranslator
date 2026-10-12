@@ -25,7 +25,7 @@
 ## 5. Owner-managed GitHub setup and end-to-end verification
 
 - [x] 5.1 Create and securely back up the upload keystore, then add `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEY_ALIAS`, `ANDROID_KEYSTORE_PASSWORD`, and `ANDROID_KEY_PASSWORD` as GitHub Actions secrets; verify no secret or keystore is tracked by Git.
-- [ ] 5.2 After the first CI run, protect `master` by requiring pull requests and the CI verification check before merging; verify GitHub blocks a failing pull request.
+- [x] 5.2 After the first CI run, protect `master` by requiring pull requests and the CI verification check before merging; verify GitHub blocks a failing pull request.
 - [ ] 5.3 Verify the full release path with a merged test PR and a test `vX.Y.Z` tag; verify prerelease/stable artifacts install and their release metadata points to the correct commit.
 
 ## Workflow follow-up
