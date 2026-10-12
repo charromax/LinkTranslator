@@ -6,7 +6,7 @@ Console app record and service-account policy are ready.
 
 ## CI verification
 
-The `Android CI / verification` check runs for every pull request to `master`
+The `verification` check runs for every pull request to `master`
 and every push to `master`. It runs:
 
 ```sh
@@ -23,7 +23,7 @@ After the first successful run, configure GitHub branch protection for
 1. Set the branch name pattern to `master`.
 2. Enable **Require a pull request before merging**.
 3. Enable **Require status checks to pass before merging** and select
-   `Android CI / verification`.
+   `verification`.
 4. Save the rule.
 
 ## Signing setup
