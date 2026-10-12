@@ -36,6 +36,8 @@
         <activity
             android:name=".ui.TranslateActivity"
             android:exported="true"
+            android:theme="@style/Theme.LinkTranslator.Dialog"
+            android:taskAffinity=""
             android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

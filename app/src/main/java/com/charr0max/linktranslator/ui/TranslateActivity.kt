@@ -7,15 +7,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.charr0max.linktranslator.Option
 import com.charr0max.linktranslator.Outcome
 import com.charr0max.linktranslator.openUrl
+import com.charr0max.linktranslator.songLinkUrl
 import com.charr0max.linktranslator.ui.theme.LinkTranslatorTheme
 
 class TranslateActivity : ComponentActivity() {
@@ -44,34 +48,42 @@ class TranslateActivity : ComponentActivity() {
         setContent {
             LinkTranslatorTheme {
                 val state by viewModel.state.collectAsState()
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(24.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    when (val s = state) {
-                        UiState.Loading -> CircularProgressIndicator()
-                        UiState.NoLink -> {
-                            Text("No music link found in the shared text.")
-                            TextButton(onClick = ::finish) { Text("Close") }
-                        }
-                        is UiState.Error -> {
-                            Text("Couldn't translate this link. Check your connection.")
-                            Button(onClick = viewModel::retry) { Text("Retry") }
-                            TextButton(onClick = { openUrl(s.source.url); finish() }) { Text("Open original link") }
-                        }
-                        is UiState.Picker -> Picker(s.outcome.options) { option, always ->
-                            if (always) viewModel.remember(option.platform)
-                            openUrl(option.url, option.platform)
-                            finish()
-                        }
-                        is UiState.Launch -> LaunchedEffect(s) {
-                            when (val o = s.outcome) {
-                                is Outcome.Open -> openUrl(o.option.url, o.option.platform)
-                                is Outcome.Browser -> openUrl(o.url)
-                                is Outcome.Choose -> Unit
+                Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
+                    Surface(shape = MaterialTheme.shapes.extraLarge, tonalElevation = 6.dp, shadowElevation = 6.dp) {
+                        Column(
+                            modifier = Modifier.padding(24.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            when (val s = state) {
+                                UiState.Loading -> Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                ) {
+                                    CircularProgressIndicator(Modifier.size(28.dp), strokeWidth = 3.dp)
+                                    Text("Translating link...", style = MaterialTheme.typography.bodyLarge)
+                                }
+                                UiState.NoLink -> {
+                                    Text("No music link found in the shared text.")
+                                    TextButton(onClick = ::finish) { Text("Close") }
+                                }
+                                is UiState.Error -> {
+                                    Text("Couldn't translate this link. Check your connection.")
+                                    Button(onClick = viewModel::retry) { Text("Retry") }
+                                    TextButton(onClick = { openUrl(songLinkUrl(s.source.url)); finish() }) { Text("Open on song.link") }
+                                }
+                                is UiState.Picker -> Picker(s.outcome.options) { option, always ->
+                                    viewModel.pick(s.outcome, option, always)
+                                }
+                                is UiState.Launch -> LaunchedEffect(s) {
+                                    when (val o = s.outcome) {
+                                        is Outcome.Open -> openUrl(o.option.url, o.option.platform)
+                                        is Outcome.Browser -> openUrl(o.url)
+                                        is Outcome.Choose -> Unit
+                                    }
+                                    finish()
+                                }
                             }
-                            finish()
                         }
                     }
                 }

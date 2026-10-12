@@ -14,11 +14,11 @@ private val Context.dataStore by preferencesDataStore("settings")
 private val preferredKey = stringPreferencesKey("preferred_platform")
 
 suspend fun Context.preferredPlatform(): Platform? =
-    dataStore.data.map { it[preferredKey] }.first()?.let(Platform::fromKey)
+    dataStore.data.map { it[preferredKey] }.first()?.let(Platform::fromId)
 
 suspend fun Context.setPreferredPlatform(platform: Platform?) {
     dataStore.edit { prefs ->
-        if (platform == null) prefs.remove(preferredKey) else prefs[preferredKey] = platform.odesliKey
+        if (platform == null) prefs.remove(preferredKey) else prefs[preferredKey] = platform.id
     }
 }
 

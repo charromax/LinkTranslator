@@ -4,7 +4,7 @@ import java.net.URI
 import java.net.URLEncoder
 
 enum class Platform(
-    val odesliKey: String,
+    val id: String,
     val packageName: String,
     val displayName: String,
     val hosts: List<String>,
@@ -20,7 +20,7 @@ enum class Platform(
         searchTemplate.replace("{q}", URLEncoder.encode(query, "UTF-8").replace("+", "%20"))
 
     companion object {
-        fun fromKey(key: String): Platform? = entries.firstOrNull { it.odesliKey == key }
+        fun fromId(id: String): Platform? = entries.firstOrNull { it.id == id }
 
         fun fromHost(host: String): Platform? = entries.firstOrNull { p ->
             p.hosts.any { host == it || host.endsWith(".$it") }
