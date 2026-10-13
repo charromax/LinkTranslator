@@ -9,6 +9,16 @@ An Android app that opens music links in the streaming app you actually use. If 
 3. The app detects which supported music apps are installed (Spotify, YouTube Music, Deezer, Tidal, Apple Music), excluding the source platform.
 4. For the chosen app it tries to find the exact track (Deezer, Apple Music and YouTube Music; the YouTube Music lookup is unofficial) and otherwise opens a search for it. One match opens that app, several show a picker (with an "always use this app" option), and none opens `song.link/<url>` in the browser. The same fallback applies when the track can't be identified or the link isn't from Spotify.
 
+## Set Polyglot as the Spotify link handler
+
+To have Spotify track links open in Polyglot when tapped:
+
+1. Install and open Polyglot at least once.
+2. On your Android device, open **Settings > Apps > Default apps > Opening links > Polyglot**. The exact names may vary by Android version or device manufacturer; on some devices this is under **Polyglot > Open by default**.
+3. Turn on **Open supported links**, then add or enable **open.spotify.com** in the supported web addresses.
+4. If Spotify still opens the links, go to **Spotify > Open by default** in Android settings and turn off its link handling for `open.spotify.com`.
+5. Tap a Spotify track link to check that Polyglot opens it. You can also share Spotify links to Polyglot from another app's share menu.
+
 ## Tech stack
 
 - Kotlin 2.2
